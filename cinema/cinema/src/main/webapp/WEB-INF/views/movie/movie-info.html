@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .header {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/api/placeholder/1200/300');
+            background-size: cover;
+            color: white;
+            padding: 40px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .movie-title {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .age-rating {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .movie-poster {
+            width: 400px;
+            margin: 20px 0;
+        }
+
+        .movie-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .movie-details {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .movie-info {
+            padding-top: 20px;
+        }
+
+        .info-row {
+            margin-bottom: 10px;
+        }
+
+        .info-row .label {
+            color: rgba(255,255,255,0.7);
+            margin-right: 10px;
+        }
+
+        .view-details-btn {
+            display: inline-block;
+            background: #2c97c4;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+
+        .view-details-btn:hover {
+            background: #247a9e;
+        }
+
+        .dates {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .date-btn {
+            padding: 8px 16px;
+            border: 1px solid #0d6efd;
+            border-radius: 4px;
+            background: white;
+            color: #0d6efd;
+            cursor: pointer;
+        }
+
+        .date-btn.active {
+            background: #0d6efd;
+            color: white;
+        }
+
+        .section-title {
+            color: #ffffff;
+            font-size: 24px;
+            margin: 30px 0 20px;
+            font-weight: 600;
+        }
+
+        .cinema {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .cinema-header {
+            background: #2c97c4;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .showtime-row {
+            display: flex;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .showtime-row:last-child {
+            border-bottom: none;
+        }
+
+        .hall-name {
+            width: 150px;
+            font-weight: 500;
+            color: #444;
+        }
+
+        .times {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .time-btn {
+            background: #2c97c4;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .time-btn:hover {
+            background: #247a9e;
+        }
+
+        .time-btn .price {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .showtime-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hall-name {
+                margin-bottom: 10px;
+            }
+
+            .times {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="movie-title">
+        <h1 th:text="${movie.name}"></h1>
+        <span class="age-rating" th:text="${movie.ageRating} + '+'">16+</span>
+    </div>
+    <div class="movie-details">
+        <div class="movie-poster">
+            <img th:src="${movie.image}" th:alt="${movie.name}" class="movie-image"/>
+            <a th:href="@{/movies/{movieId}/details(movieId=${movie.getId()})}" class="view-details-btn">View Details</a>
+            <button class="view-details-btn" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')">Thriller</button>
+            <a th:href="@{/movies/{movieId}/assign(movieId=${movie.getId()})}" class="view-details-btn">Assign Movie to Cinema</a>
+        </div>
+        <div class="movie-info">
+            <div class="info-row">
+                <span class="label">Duration:</span>
+                <span class="value" th:text="${movie.duration + ' min'}"></span>
+            </div>
+            <div class="info-row">
+                <span class="label">Genre:</span>
+                <span class="value" th:text="${movie.genre}"></span>
+            </div>
+            <div class="info-row">
+                <span class="label">Release Date:</span>
+                <span class="value" th:text="${#temporals.format(movie.releaseDate, 'dd MMMM yyyy')}"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="dates" th:with="today=${#temporals.createToday()}">
+        <button th:each="i : ${#numbers.sequence(0, 7)}"
+                class="date-btn"
+                th:classappend="${i == 0 ? 'active' : ''}"
+                th:data-date="${#temporals.format(today.plusDays(i), 'yyyy-MM-dd')}"
+                th:onclick="selectDate(this)">
+            <span th:if="${i == 0}">Today</span>
+            <span th:if="${i == 1}">Tomorrow</span>
+            <span th:if="${i > 1}" th:text="${#temporals.format(today.plusDays(i), 'dd.MM')}">22.11</span>
+        </button>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">Available in Cinemas</h2>
+
+        <div th:each="cinema : ${cinemas}" class="cinema">
+            <div class="cinema-header">
+                <span th:text="${cinema.name}">Cinema Name</span>
+            </div>
+
+            <div th:each="entry : ${showTimesByHall}" class="showtime-row">
+                <div class="hall-name" th:text="${entry.key.name}">Hall Name</div>
+                <div class="times">
+                    <button th:each="showTime : ${entry.value}"
+                            class="time-btn"
+                            th:onclick="'bookTicket(' + ${showTime.id} + ')'">
+                        <span th:text="${#temporals.format(showTime.startTime, 'HH:mm')}">14:30</span>
+                        <span class="price">$<span th:text="${showTime.price}">12</span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
