@@ -1,0 +1,26 @@
+<h2 class="text-center" style="color: #ffdd57;">List of Houses</h2>
+<div th:if="${houses != null and !houses.isEmpty()}">
+  <div class="d-flex flex-wrap gap-4 justify-content-center">
+    <div class="card text-white" th:each="house : ${houses}" style="width: 18rem; background-color: rgba(0,0,0,0.7); border: 2px solid #ffffff;">
+      <div class="card-body">
+        <h5 class="card-title" th:text="${house.address}">Address</h5>
+        <p class="card-text">Country: <span th:text="${house.country}">Country</span></p>
+        <p class="card-text">Rooms: <span th:text="${house.room}">Rooms</span></p>
+        <p class="card-text">Price: <span th:text="${house.price}">Price</span></p>
+        <p class="card-text">House Type: <span th:text="${house.houseType}">House Type</span></p>
+
+        <div class="d-flex gap-2 mt-3">
+          <form th:method="GET" th:action="@{/house/update/{houseId}(houseId=${house.id})}">
+            <button type="submit" class="btn btn-primary">Update</button>
+          </form>
+          <form th:method="POST" th:action="@{/house/delete/{houseId}(houseId=${house.id})}">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:if="${houses == null or houses.isEmpty()}">
+  <p>No houses found for this agency.</p>
+</div>
